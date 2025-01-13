@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 
 public class Front {
 
-    private static int width = 200;
+    private static int width = 300;
     private static int height = 400;
     private static String print = "0";
-    private static String input = "";
+    private static String input = "0";
     private static Double arg1 = 0.0;
     private static Double arg2 = arg1;
     private static short operation = 0;
@@ -36,7 +36,15 @@ public class Front {
             public void actionPerformed(ActionEvent e) {
                 JButton clickedButton = (JButton)e.getSource();
                 String inputText = clickedButton.getText();
+                if(input.contains(".") && inputText == "."){
+                    return;
+                }
+
+
                 input += inputText;
+                if(input.charAt(0) == '0' && !input.contains(".")){
+                    input = input.substring(1,input.length());
+                }
                 print = input;
                 resultLabel.setText(print);
             }
@@ -52,6 +60,7 @@ public class Front {
                         arg1 = Double.parseDouble(input);
                         arg1 = -arg1;
                         print = arg1.toString();
+                        input = "0";
                         resultLabel.setText(print);
                         break;
                     case "1/x":
@@ -103,7 +112,7 @@ public class Front {
                         break;
                     case "C":
                         print = "0";
-                        input = "";
+                        input = "0";
                         arg1 = 0.0;
                         arg2 = arg1;
                         operation = 0;
@@ -179,8 +188,9 @@ public class Front {
         for (int i = 0; i < func.length; i++) {
             JButton button = new JButton(func[i]);
             button.setFont(new Font("Arial", Font.PLAIN, 18));
-            if (Character.isDigit(func[i].charAt(0)) || func[i].equals("0") || func[i].equals(".")) {
+            if ((Character.isDigit(func[i].charAt(0)) || func[i].equals(".")) && func[i] != "1/x") {
                 button.addActionListener(numberButtonListener);
+                System.out.println(func[i]);
             } else {
                 button.addActionListener(funcButtonListener);
             }
